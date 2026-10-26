@@ -1,0 +1,387 @@
+CREATE TABLE Personeller (
+    PersonelID INT IDENTITY(1,1) PRIMARY KEY,
+    AdSoyad NVARCHAR(100),
+    Departman NVARCHAR(50),
+    Maas INT
+);
+
+INSERT INTO Personeller (AdSoyad, Departman, Maas)
+VALUES 
+('Ahmet Yılmaz', 'Yazılım', 45000),
+('Ayşe Kaya', 'Pazarlama', 38000),
+('Mehmet Demir', 'Yönetim', 72000),
+('Fatma Çelik', 'Muhasebe', 35000);
+
+SELECT * FROM Personeller;
+DECLARE @EnYuksekMaas INT;
+
+SELECT @EnYuksekMaas = MAX(Maas) 
+FROM Personeller;
+
+SELECT @EnYuksekMaas AS EnYuksekMaas;
+
+
+
+
+ÖRNEK222222222222222222222222
+
+CREATE TABLE Kitaplar (
+    KitapID INT IDENTITY(1,1) PRIMARY KEY,
+    KitapAdi NVARCHAR(100),
+    Yazar NVARCHAR(100),
+    SayfaSayisi INT
+);
+
+INSERT INTO Kitaplar (KitapAdi, Yazar, SayfaSayisi)
+VALUES 
+('Sefiller', 'Victor Hugo', 1230),
+('Suç ve Ceza', 'Dostoyevski', 680),
+('Dönüşüm', 'Franz Kafka', 160),
+('Kürk Mantolu Madonna', 'Sabahattin Ali', 160),
+('Kayıp Zamanın İzinde', 'Marcel Proust', 3200);
+
+SELECT * FROM Kitaplar;
+DECLARE @maxsayfa INT;
+
+SELECT @maxsayfa = MAX(SayfaSayisi) 
+FROM Kitaplar;
+
+SELECT @maxsayfa AS EnFazlaSayfaSayisi;
+
+bazı bilgiler
+
+SELECT • FROM Sys.mesgages
+SELECT 5 / 0
+SELECT QQERROR
+
+
+SELECT 5 / 0
+SELECT * FROM master.dbo.sysmessages
+Where error=@@ERROR
+
+SELECT @@SERVICENAME sorgu sonucu SQLEXPRESS sistem üzerinde kullanmış olduğu ismi verecektir
+SELECT @@SERVERNAME sorgu sonucu MYO22\SQLEXPRESS  SQL çalıştığı yerel sunucu ismi
+SELECT @@VERSİON SQL versiyonu hakkında bilgi verir
+SELECT @@LANGUAGE AS 'kullanılan dil'  SQL kullanılan dilini verir
+SELECT @@LANGID SQL kullanmış olduğu dilin sayısal karşılığını verir
+SET LANGUAGE 'turkish' SQL dilini TÜRKÇEYE çevirir
+SELECT @@MAX_CONNECTTIONS SQL eş zamanlı bağlantı sayısını verir
+SELECT @@DATEFİRST SQL tanımlı olan haftanın ilk gününü verir
+
+
+
+ÖRNEK3333333333333333333333
+
+CREATE TABLE Personeller (
+    PersonelID INT IDENTITY(1,1) PRIMARY KEY,
+    AdSoyad NVARCHAR(100),
+    Departman NVARCHAR(50),
+    Durum NVARCHAR(20) -- 'Aktif' veya 'Ayrildi' gibi durumlar için
+);
+
+INSERT INTO Personeller (AdSoyad, Departman, Durum)
+VALUES 
+('Ahmet Yılmaz', 'Yazılım', 'Aktif'),
+('Ayşe Kaya', 'Pazarlama', 'Ayrildi'),
+('Mehmet Demir', 'Yönetim', 'Aktif'),
+('Fatma Çelik', 'Muhasebe', 'Ayrildi'),
+('Ali Can', 'Yazılım', 'Ayrildi');
+
+SELECT * FROM Personeller;
+DECLARE @SilinenSayisi INT;
+
+DELETE FROM Personeller 
+WHERE Durum = 'Ayrildi';
+
+SELECT @SilinenSayisi = @@ROWCOUNT;
+SELECT @SilinenSayisi AS SilinenPersonelSayisi;
+SELECT * FROM Personeller;
+
+
+
+BİLGİ
+
+DECLARE @deger INT;
+SET @deger = 100;
+GO
+SELECT @deger AS DegiskenDegeri;
+
+
+
+
+ÖRNEK44444444444444444444444444444
+
+DECLARE @Personel TABLE (
+    No INT IDENTITY(1,1) PRIMARY KEY,
+    AdSoyad NVARCHAR(100) NOT NULL,
+    Telefon VARCHAR(15) NULL
+);
+
+
+INSERT INTO @Personel (AdSoyad, Telefon)
+VALUES 
+('Ahmet Yılmaz', '0555 111 22 33'),
+('Ayşe Kaya', '0544 222 33 44'),
+('Mehmet Demir', '0532 333 44 55');
+
+SELECT 
+    No, 
+    AdSoyad, 
+    Telefon 
+FROM @Personel;
+
+
+
+ÖRNEK5555555555555555555555
+CREATE TABLE Yazarlar (
+    yazar_no INT PRIMARY KEY,
+    ad NVARCHAR(50),
+    soyad NVARCHAR(50)
+);
+
+
+INSERT INTO Yazarlar (yazar_no, ad, soyad)
+VALUES 
+(1, 'Fyodor', 'Dostoyevski'),
+(2, 'Victor', 'Hugo'),
+(3, 'Franz', 'Kafka'),
+(4, 'Sabahattin', 'Ali'),
+(5, 'George', 'Orwell');
+
+
+SELECT * FROM Yazarlar;
+DECLARE @yazar TABLE (
+    yazar_no INT
+);
+
+INSERT INTO @yazar (yazar_no)
+VALUES 
+(1),
+(3);
+
+SELECT 
+    Y.yazar_no,
+    Y.ad,
+    Y.soyad
+FROM Yazarlar AS Y
+INNER JOIN @yazar AS YD ON Y.yazar_no = YD.yazar_no;
+
+
+
+ÖRNEK66666666666666666666
+
+CREATE TABLE Kutuphaneler (
+    KutuphaneID INT PRIMARY KEY IDENTITY(1,1),
+    KutuphaneAdi NVARCHAR(100)
+);
+
+CREATE TABLE KitapKutuphane (
+    KayitID INT PRIMARY KEY IDENTITY(1,1),
+    ISBN VARCHAR(20),
+    KitapAdi NVARCHAR(100),
+    KutuphaneID INT FOREIGN KEY REFERENCES Kutuphaneler(KutuphaneID)
+);
+
+INSERT INTO Kutuphaneler (KutuphaneAdi)
+VALUES 
+('Milli Kütüphane'),
+('Beyazıt Devlet Kütüphanesi'),
+('Atatürk Kitaplığı');
+
+INSERT INTO KitapKutuphane (ISBN, KitapAdi, KutuphaneID)
+VALUES 
+('978-975-07', 'Suç ve Ceza', 1),
+('978-975-07', 'Suç ve Ceza', 2), 
+('978-975-08', 'Kürk Mantolu Madonna', 2),
+('978-975-09', 'Sefiller', 3);  
+
+
+
+
+ÖRNEK7777777777777777777777
+
+CREATE TABLE Urunler (
+    UrunID INT IDENTITY(1,1) PRIMARY KEY,
+    UrunAdi NVARCHAR(50),
+    Fiyat DECIMAL(10,2)
+);
+
+INSERT INTO Urunler (UrunAdi, Fiyat) 
+VALUES ('Klavye', 500), ('Mouse', 300), ('Monitör', 4000);
+
+DECLARE @ZamRaporu TABLE (
+    UrunAdi NVARCHAR(50),
+    EskiFiyat DECIMAL(10,2),
+    YeniFiyat DECIMAL(10,2)
+);
+
+UPDATE Urunler
+SET Fiyat = Fiyat * 1.20
+OUTPUT 
+    INSERTED.UrunAdi,
+    DELETED.Fiyat AS EskiFiyat,
+    INSERTED.Fiyat AS YeniFiyat
+INTO @ZamRaporu;
+
+SELECT * FROM @ZamRaporu;
+
+
+
+ÖRNEK888888888888888
+
+CREATE TABLE Ogrenciler (
+    OgrenciID INT IDENTITY(1,1) PRIMARY KEY,
+    AdSoyad NVARCHAR(50),
+    Puan INT
+);
+
+INSERT INTO Ogrenciler (AdSoyad, Puan) 
+VALUES ('Ali Can', 45), ('Veli Han', 80);
+
+IF EXISTS (SELECT 1 FROM Ogrenciler WHERE Puan < 50)
+BEGIN
+    PRINT 'Dersten kalan öğrenciler bulunmaktadır!';
+    SELECT AdSoyad, Puan FROM Ogrenciler WHERE Puan < 50;
+END
+ELSE
+BEGIN
+    PRINT 'Tüm öğrenciler dersi başarıyla geçmiştir.';
+END
+
+
+
+
+ÖRNEK999999999999999999999
+
+CREATE TABLE Siparisler (
+    SiparisID INT IDENTITY(1,1) PRIMARY KEY,
+    Musteri NVARCHAR(50),
+    Tutar DECIMAL(10,2),
+    DurumKodu INT
+);
+
+INSERT INTO Siparisler (Musteri, Tutar, DurumKodu) 
+VALUES ('Ahmet', 1500, 1), ('Ayşe', 3200, 2), ('Mehmet', 850, 3);
+
+SELECT 
+    Musteri,
+    Tutar,
+    Durum = CASE DurumKodu
+        WHEN 1 THEN 'Onay Bekliyor'
+        WHEN 2 THEN 'Kargoya Verildi'
+        WHEN 3 THEN 'Teslim Edildi'
+        ELSE 'Bilinmiyor'
+    END,
+    Segment = CASE 
+        WHEN Tutar >= 3000 THEN 'VIP Sipariş'
+        WHEN Tutar >= 1000 THEN 'Standart Sipariş'
+        ELSE 'Düşük Tutar'
+    END
+FROM Siparisler;
+
+
+
+ÖRNEK1010101010
+
+CREATE TABLE SayiHavuzu (
+    Sayi INT
+);
+
+DECLARE @Sayac INT = 1;
+
+WHILE @Sayac <= 10
+BEGIN
+    IF @Sayac % 2 = 1 
+    BEGIN
+        SET @Sayac = @Sayac + 1;
+        CONTINUE;
+    END
+
+    IF @Sayac = 8 
+    BEGIN
+        PRINT '8 değerine ulaşıldı, döngü sonlandırıldı.';
+        BREAK;
+    END
+
+    INSERT INTO SayiHavuzu (Sayi) VALUES (@Sayac);
+    SET @Sayac = @Sayac + 1;
+END
+
+SELECT * FROM SayiHavuzu;
+
+
+
+ÖRNEK11
+
+DECLARE @CalissinMi BIT = 1;
+
+IF @CalissinMi = 0
+BEGIN
+    PRINT 'İşlem iptal edildi (Erken çıkış).';
+    RETURN; 
+END
+
+PRINT 'İşlem başlıyor, 2 saniye gecikme uygulanıyor...';
+WAITFOR DELAY '00:00:02'; 
+
+GOTO BitisMesaji;
+
+PRINT 'Bu satır GOTO nedeniyle atlanacaktır.';
+
+BitisMesaji:
+PRINT 'İşlem başarıyla tamamlandı.';
+
+
+
+ÖRNEK12121212
+
+CREATE TABLE Kategoriler (
+    KategoriID INT PRIMARY KEY,
+    KategoriAdi NVARCHAR(50)
+);
+
+CREATE TABLE UrunListesi (
+    UrunID INT PRIMARY KEY,
+    UrunAdi NVARCHAR(50),
+    KategoriID INT FOREIGN KEY REFERENCES Kategoriler(KategoriID)
+);
+
+INSERT INTO Kategoriler VALUES (1, 'Elektronik');
+INSERT INTO UrunListesi VALUES (101, 'Laptop', 1);
+
+BEGIN TRY
+    DELETE FROM Kategoriler WHERE KategoriID = 1;
+END TRY
+BEGIN CATCH
+    SELECT 
+        ERROR_NUMBER() AS [Hata Kodu],
+        ERROR_MESSAGE() AS [Hata Mesajı],
+        ERROR_LINE() AS [Hata Satırı];
+
+    IF ERROR_NUMBER() = 547
+    BEGIN
+        PRINT 'HATA: Bu kategoriye bağlı ürünler olduğu için doğrudan silemezsiniz!';
+    END
+END CATCH;
+
+
+ÖRNEK13131313
+
+CREATE TABLE Musteriler (
+    MusteriID INT IDENTITY(1,1) PRIMARY KEY,
+    Sehir NVARCHAR(50),
+    Ad NVARCHAR(50)
+);
+
+INSERT INTO Musteriler (Sehir, Ad) VALUES ('Kayseri', 'Ahmet'), ('Konya', 'Mehmet'), ('Kayseri', 'Ayşe');
+
+DECLARE @HedefTablo NVARCHAR(50) = 'Musteriler';
+DECLARE @FiltreSehir NVARCHAR(50) = 'Kayseri';
+DECLARE @DinamikSorgu NVARCHAR(MAX);
+
+SET @DinamikSorgu = 'SELECT * FROM ' + @HedefTablo + ' WHERE Sehir = ''' + @FiltreSehir + '''';
+
+PRINT @DinamikSorgu;
+EXECUTE(@DinamikSorgu);
+
+sayfa 57 kadar olan kısım bu kadardı
